@@ -1,7 +1,11 @@
 using UnityEngine;
+using Hotel.Models;
 
-public class SharedData : MonoBehaviour
+namespace Hotel.Containers
 {
-    public User User { get; set; }
-    public Room Room { get; set; }
+    public class SharedData : MonoBehaviour
+    {
+        public User User { get; set; }
+        public Room Room { get; set; }
+    }
 }

@@ -1,6 +1,9 @@
-public enum ServerResponse
+namespace Hotel.Networking
 {
-    Success = 0,
-    ConnectionError = 1,
-    DataError = 2,
+    public enum ServerResponse
+    {
+        Success = 0,
+        ConnectionError = 1,
+        DataError = 2,
+    }
 }

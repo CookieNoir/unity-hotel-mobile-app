@@ -1,0 +1,16 @@
+{
+    "name": "Hotel.Views",
+    "rootNamespace": "",
+    "references": [
+        "GUID:43c463a7350c2064ab1af17ebd0fc347"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

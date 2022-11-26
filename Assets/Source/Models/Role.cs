@@ -1,11 +1,14 @@
-public class Role
+namespace Hotel.Models 
 {
-    public Role(bool canManageRooms, string roleName)
+    public class Role
     {
-        CanManageRooms = canManageRooms;
-        RoleName = roleName;
-    }
+        public Role(bool canManageRooms, string roleName)
+        {
+            CanManageRooms = canManageRooms;
+            RoleName = roleName;
+        }
 
-    public bool CanManageRooms { get; private set; }
-    public string RoleName { get; private set; }
+        public bool CanManageRooms { get; private set; }
+        public string RoleName { get; private set; }
+    }
 }

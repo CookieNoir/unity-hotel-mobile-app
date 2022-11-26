@@ -3,40 +3,43 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ImageRepository : MonoBehaviour
+namespace Hotel.Repositories
 {
-    [SerializeField] private Texture2D _placeholderImage;
-    private Dictionary<string, Texture2D> _loadedImages;
-
-    private void Awake()
+    public class ImageRepository : MonoBehaviour
     {
-        _loadedImages = new Dictionary<string, Texture2D>();
-        _loadedImages.Add("placeholder", _placeholderImage);
-    }
+        [SerializeField] private Texture2D _placeholderImage;
+        private Dictionary<string, Texture2D> _loadedImages;
 
-    public async Task<Texture2D> GetImage(string url)
-    {
-        if (!_loadedImages.ContainsKey(url) || _loadedImages[url] == null)
+        private void Awake()
         {
-            Texture2D texture = await _GetRemoteTexture(url);
-            _loadedImages.Add(url, texture);
+            _loadedImages = new Dictionary<string, Texture2D>();
+            _loadedImages.Add("placeholder", _placeholderImage);
         }
-        return _loadedImages[url];
-    }
 
-    private async Task<Texture2D> _GetRemoteTexture(string url)
-    {
-        using UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-        www.timeout = 1;
-        var operation = www.SendWebRequest();
-
-        while (!operation.isDone) await Task.Yield();
-
-        if (www.result != UnityWebRequest.Result.Success)
+        public async Task<Texture2D> GetImage(string url)
         {
-            Debug.Log($"{www.error}, URL:{www.url}");
-            return _placeholderImage;
+            if (!_loadedImages.ContainsKey(url) || _loadedImages[url] == null)
+            {
+                Texture2D texture = await _GetRemoteTexture(url);
+                _loadedImages.Add(url, texture);
+            }
+            return _loadedImages[url];
         }
-        return DownloadHandlerTexture.GetContent(www);
+
+        private async Task<Texture2D> _GetRemoteTexture(string url)
+        {
+            using UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+            www.timeout = 1;
+            var operation = www.SendWebRequest();
+
+            while (!operation.isDone) await Task.Yield();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"{www.error}, URL:{www.url}");
+                return _placeholderImage;
+            }
+            return DownloadHandlerTexture.GetContent(www);
+        }
     }
 }

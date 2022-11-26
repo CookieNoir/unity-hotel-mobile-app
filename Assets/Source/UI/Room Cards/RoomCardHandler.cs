@@ -1,34 +1,39 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Hotel.Models;
+using Hotel.Repositories;
 
-public class RoomCardHandler : MonoBehaviour
+namespace Hotel.UI
 {
-    [SerializeField] private GameObject _roomCardPrefab;
-    [SerializeField] private Transform _parentObject;
-    [SerializeField] private ImageRepository _imageRepository;
-
-    public void CreateCards(List<Room> rooms, string nameFormat, string bedsNumberFormat, string priceFormat, Action<int> action)
+    public class RoomCardHandler : MonoBehaviour
     {
-        foreach (Room room in rooms)
+        [SerializeField] private GameObject _roomCardPrefab;
+        [SerializeField] private Transform _parentObject;
+        [SerializeField] private ImageRepository _imageRepository;
+
+        public void CreateCards(List<Room> rooms, string nameFormat, string bedsNumberFormat, string priceFormat, Action<int> action)
         {
-            GameObject newCard = Instantiate(_roomCardPrefab, _parentObject);
-            RoomCard roomCard = newCard.GetComponent<RoomCard>();
-            roomCard.Fill(room.RoomId,
-                string.Format(nameFormat, room.RoomId),
-                string.Format(bedsNumberFormat, room.BedsNumber),
-                string.Format(priceFormat, room.Price),
-                _imageRepository,
-                room.ImagePath,
-                action);
+            foreach (Room room in rooms)
+            {
+                GameObject newCard = Instantiate(_roomCardPrefab, _parentObject);
+                RoomCard roomCard = newCard.GetComponent<RoomCard>();
+                roomCard.Fill(room.RoomId,
+                    string.Format(nameFormat, room.RoomId),
+                    string.Format(bedsNumberFormat, room.BedsNumber),
+                    string.Format(priceFormat, room.Price),
+                    _imageRepository,
+                    room.ImagePath,
+                    action);
+            }
         }
-    }
 
-    public void Clear()
-    {
-        foreach (Transform child in _parentObject)
+        public void Clear()
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in _parentObject)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

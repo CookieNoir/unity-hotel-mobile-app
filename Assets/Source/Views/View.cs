@@ -1,23 +1,28 @@
 using UnityEngine;
-[RequireComponent(typeof(IViewModel))]
-public class View : MonoBehaviour
+using Hotel.ViewModels;
+
+namespace Hotel.Views
 {
-    private IViewModel _viewModel;
-
-    private void Awake()
+    [RequireComponent(typeof(IViewModel))]
+    public class View : MonoBehaviour
     {
-        _viewModel = GetComponent<IViewModel>();
-    }
+        private IViewModel _viewModel;
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-        _viewModel.OnShow();
-    }
+        private void Awake()
+        {
+            _viewModel = GetComponent<IViewModel>();
+        }
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-        _viewModel.OnHide();
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            _viewModel.OnShow();
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+            _viewModel.OnHide();
+        }
     }
 }

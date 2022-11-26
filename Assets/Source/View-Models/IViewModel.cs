@@ -1,5 +1,8 @@
-﻿public interface IViewModel
+﻿namespace Hotel.ViewModels
 {
-    void OnShow();
-    void OnHide();
+    public interface IViewModel
+    {
+        void OnShow();
+        void OnHide();
+    }
 }

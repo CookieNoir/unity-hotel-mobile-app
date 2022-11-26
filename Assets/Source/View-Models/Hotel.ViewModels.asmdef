@@ -1,0 +1,22 @@
+{
+    "name": "Hotel.ViewModels",
+    "rootNamespace": "",
+    "references": [
+        "GUID:995a4366ea82c1e44abe9d6ba6880207",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:109ebfccbb5be9047920f60080eb8bf7",
+        "GUID:5401e0c67d3ad134abb5ae213d686593",
+        "GUID:b9afeececcce2664ea7a80e930f5a951",
+        "GUID:655c12676182b8a46b007741d15ec4af",
+        "GUID:f43f0a997d2907b4d92040b88043eaa4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

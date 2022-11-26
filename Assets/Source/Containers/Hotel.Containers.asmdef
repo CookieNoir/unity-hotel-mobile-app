@@ -1,0 +1,16 @@
+{
+    "name": "Hotel.Containers",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5401e0c67d3ad134abb5ae213d686593"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
