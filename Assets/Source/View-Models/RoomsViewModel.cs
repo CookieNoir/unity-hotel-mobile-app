@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using Hotel.Models;
 using Hotel.Networking;
-using Hotel.Containers;
 using Hotel.UI;
 
 namespace Hotel.ViewModels
@@ -23,11 +22,11 @@ namespace Hotel.ViewModels
         private Dictionary<int, Room> _rooms = new Dictionary<int, Room>();
 
         private static readonly List<string> _textFormats = new List<string>()
-    {
-        "Комната {0}",
-        "макс. гостей: {0}",
-        "за сутки: {0} руб.",
-    };
+        {
+            "Комната {0}",
+            "макс. гостей: {0}",
+            "за сутки: {0} руб.",
+        };
 
         private static readonly Dictionary<string, string> _exceptions = new Dictionary<string, string>()
         {

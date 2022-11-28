@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Hotel.Containers;
 using Hotel.UI;
 using Hotel.Repositories;
 
@@ -19,11 +18,11 @@ namespace Hotel.ViewModels
         [SerializeField] private GameObject _editButton;
 
         private static readonly List<string> _textFormats = new List<string>()
-    {
-        "Комната {0}",
-        "макс. гостей: {0}",
-        "за сутки: {0} руб.",
-    };
+        {
+            "Комната {0}",
+            "макс. гостей: {0}",
+            "за сутки: {0} руб.",
+        };
 
         public void OnShow()
         {

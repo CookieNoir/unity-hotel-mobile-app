@@ -29,7 +29,7 @@ namespace Hotel.Repositories
         private async Task<Texture2D> _GetRemoteTexture(string url)
         {
             using UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-            www.timeout = 1;
+            www.timeout = 5;
             var operation = www.SendWebRequest();
 
             while (!operation.isDone) await Task.Yield();

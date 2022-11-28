@@ -1,7 +1,7 @@
 using UnityEngine;
 using Hotel.Models;
 
-namespace Hotel.Containers
+namespace Hotel.ViewModels
 {
     public class SharedData : MonoBehaviour
     {

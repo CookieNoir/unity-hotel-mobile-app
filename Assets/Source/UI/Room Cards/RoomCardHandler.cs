@@ -18,7 +18,7 @@ namespace Hotel.UI
             {
                 GameObject newCard = Instantiate(_roomCardPrefab, _parentObject);
                 RoomCard roomCard = newCard.GetComponent<RoomCard>();
-                roomCard.Fill(room.RoomId,
+                roomCard.SetValues(room.RoomId,
                     string.Format(nameFormat, room.RoomId),
                     string.Format(bedsNumberFormat, room.BedsNumber),
                     string.Format(priceFormat, room.Price),

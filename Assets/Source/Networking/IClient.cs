@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hotel.Models;
@@ -12,5 +13,9 @@ namespace Hotel.Networking
         Task<ServerResponse> EditRoom(Room room);
         Task<ServerResponse> AddRoom(int bedsNumber, int price, string imagePath);
         Task<ServerResponse> RemoveRoom(int roomId);
+        Task<DateTime> GetCurrentDate();
+        Task<ServerResponse> BookRoom(int roomId, int userId, DateTime fromDate, DateTime toDate);
+        Task<(ServerResponse, List<BookingData>)> GetBookings();
+        Task<ServerResponse> ChangeBookingStatus(int bookingId, BookingStage stage);
     }
 }

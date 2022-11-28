@@ -6,7 +6,6 @@ using TMPro;
 using Hotel.Models;
 using Hotel.Validation;
 using Hotel.Networking;
-using Hotel.Containers;
 using Hotel.UI;
 
 namespace Hotel.ViewModels
@@ -27,9 +26,9 @@ namespace Hotel.ViewModels
 
 
         private static readonly List<string> _textFormats = new List<string>()
-    {
-        "Комната {0}",
-    };
+        {
+            "Комната {0}",
+        };
 
         private static readonly Dictionary<string, string> _messages = new Dictionary<string, string>()
         {

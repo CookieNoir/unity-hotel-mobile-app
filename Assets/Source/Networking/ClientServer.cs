@@ -21,6 +21,13 @@ namespace Hotel.Networking
             ["Edit_Room"] = "update \"Room\" set \"beds_number\"={1}, \"price\"={2}, \"image_path\"='{3}' where \"room_id\" = {0}",
             ["Add_Room"] = "insert into \"Room\" values (nextval('\"public\".\"Room_room_id_seq\"'), {0}, {1}, '{2}')",
             ["Remove_Room"] = "delete from \"Room\" where \"room_id\"={0}",
+            ["Book_Room"] = "insert into \"Booking\" values (nextval('\"public\".\"Booking_booking_id_seq\"'), {0}, {1}, '{2}', '{3}');" +
+                            "select currval('\"public\".\"Booking_booking_id_seq\"');",
+            ["Add_Booking_Status"] = "insert into \"Booking_status\" values ({0}, 0)",
+            ["Get_Bookings"] = "select \"Booking\".\"booking_id\", \"Booking\".\"room_id\", \"User\".\"email\", \"User\".\"phone_number\", \"Booking\".\"date_from\", \"Booking\".\"date_to\", \"Booking_status\".\"stage_id\" " +
+                            "from \"Booking_status\" join \"Booking\" on \"Booking\".\"booking_id\" = \"Booking_status\".\"booking_id\" " +
+                            "join \"User\" on \"Booking\".\"user_id\" = \"User\".\"user_id\"",
+            ["Change_Booking_Status"] = "update \"Booking_status\" set \"stage_id\" = {1} WHERE \"booking_id\" = {0}",
         };
 
         private async Task<NpgsqlConnection> _GetConnection()
@@ -214,6 +221,96 @@ namespace Hotel.Networking
             {
                 transaction = await connection.BeginTransactionAsync();
                 string command = string.Format(_sqlCommands["Remove_Room"], roomId);
+                await new NpgsqlCommand(command, connection).ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
+                return ServerResponse.Success;
+            }
+            catch
+            {
+                if (transaction != null) await transaction.RollbackAsync();
+                return ServerResponse.ConnectionError;
+            }
+        }
+
+        public Task<DateTime> GetCurrentDate()
+        {
+            return Task.FromResult(DateTime.Today);
+        }
+
+        public async Task<ServerResponse> BookRoom(int roomId, int userId, DateTime fromDate, DateTime toDate)
+        {
+            using NpgsqlConnection connection = await _GetConnection();
+            if (!_IsOpen(connection)) return ServerResponse.ConnectionError;
+
+            NpgsqlTransaction transaction = null;
+            try
+            {
+                transaction = await connection.BeginTransactionAsync();
+                string command = string.Format(_sqlCommands["Book_Room"], roomId, userId, fromDate.ToString("yyyy-MM-dd"), toDate.ToString("yyyy-MM-dd"));
+                NpgsqlDataReader reader = await new NpgsqlCommand(command, connection).ExecuteReaderAsync();
+                object bookingId = null;
+                try
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        bookingId = reader[0];
+                    }
+                }
+                finally
+                {
+                    await reader.CloseAsync();
+                }
+                string statusCommand = string.Format(_sqlCommands["Add_Booking_Status"], bookingId);
+                await new NpgsqlCommand(statusCommand, connection).ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
+                return ServerResponse.Success;
+            }
+            catch
+            {
+                if (transaction != null) await transaction.RollbackAsync();
+                return ServerResponse.ConnectionError;
+            }
+        }
+
+        public async Task<(ServerResponse, List<BookingData>)> GetBookings()
+        {
+            using NpgsqlConnection connection = await _GetConnection();
+            if (!_IsOpen(connection)) return (ServerResponse.ConnectionError, null);
+
+            NpgsqlDataReader reader = await new NpgsqlCommand(_sqlCommands["Get_Bookings"], connection).ExecuteReaderAsync();
+            try
+            {
+                List<BookingData> bookings = new List<BookingData>();
+                while (await reader.ReadAsync())
+                {
+                    BookingData booking = new BookingData((int)reader[0], (int)reader[1], 
+                        reader[2].ToString(), reader[3].ToString(), 
+                        (DateTime)reader[4], (DateTime)reader[5], 
+                        (BookingStage)((int)reader[6]));
+                    bookings.Add(booking);
+                }
+                return (ServerResponse.Success, bookings);
+            }
+            catch
+            {
+                return (ServerResponse.ConnectionError, null);
+            }
+            finally
+            {
+                await reader.CloseAsync();
+            }
+        }
+
+        public async Task<ServerResponse> ChangeBookingStatus(int bookingId, BookingStage stage)
+        {
+            using NpgsqlConnection connection = await _GetConnection();
+            if (!_IsOpen(connection)) return ServerResponse.ConnectionError;
+
+            NpgsqlTransaction transaction = null;
+            try
+            {
+                transaction = await connection.BeginTransactionAsync();
+                string command = string.Format(_sqlCommands["Change_Booking_Status"], bookingId, (int)stage);
                 await new NpgsqlCommand(command, connection).ExecuteNonQueryAsync();
                 await transaction.CommitAsync();
                 return ServerResponse.Success;

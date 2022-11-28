@@ -14,7 +14,7 @@ namespace Hotel.UI
         private Action<int> _OnSelect;
         private int _roomId;
 
-        public void Fill(int roomId, string name, string bedsNumber, string price, ImageRepository imageRepository, string imagePath, Action<int> action)
+        public void SetValues(int roomId, string name, string bedsNumber, string price, ImageRepository imageRepository, string imagePath, Action<int> action)
         {
             _roomId = roomId;
             _roomName.text = name;
