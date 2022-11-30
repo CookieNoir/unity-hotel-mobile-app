@@ -21,7 +21,12 @@ namespace Hotel.UI
             _days = new List<CalendarDay>();
         }
 
-        public void Fill(DateTime currentDay)
+        public DateTime GetMaxPossibleDay(DateTime currentDay)
+        {
+            return currentDay.AddDays(_daysToSelect - 1);
+        }
+
+        public void Fill(DateTime currentDay, HashSet<DateTime> busyDays)
         {
             _Drop();
             if (currentDay.DayOfWeek != DayOfWeek.Monday)
@@ -36,7 +41,9 @@ namespace Hotel.UI
             int currentDayIndex = _days.Count;
             for (int i = 0; i < _daysToSelect; ++i)
             {
-                _CreateDayButton(currentDay.AddDays(i), false);
+                DateTime dateTime = currentDay.AddDays(i);
+                bool isBusy = busyDays.Contains(dateTime.Date);
+                _CreateDayButton(dateTime, isBusy);
             }
             DateTime nextDay = currentDay.AddDays(_daysToSelect);
             int daysAfter = 8 - (int)nextDay.DayOfWeek;

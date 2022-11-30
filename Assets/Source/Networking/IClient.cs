@@ -13,9 +13,14 @@ namespace Hotel.Networking
         Task<ServerResponse> EditRoom(Room room);
         Task<ServerResponse> AddRoom(int bedsNumber, int price, string imagePath);
         Task<ServerResponse> RemoveRoom(int roomId);
-        Task<DateTime> GetCurrentDate();
+        Task<(ServerResponse, DateTime)> GetCurrentDate();
         Task<ServerResponse> BookRoom(int roomId, int userId, DateTime fromDate, DateTime toDate);
         Task<(ServerResponse, List<BookingData>)> GetBookings();
         Task<ServerResponse> ChangeBookingStatus(int bookingId, BookingStage stage);
+        Task<(ServerResponse, HashSet<DateTime>)> GetBusyDays(int roomId, DateTime dateFrom, DateTime dateTo);
+        Task<ServerResponse> EditRole(string email, Role role);
+        Task<(ServerResponse, List<int>)> GetDecommissionedRooms();
+        Task<ServerResponse> RestoreRoom(int roomId);
+        Task<(ServerResponse, List<UserBookingData>)> GetUserBookings(int userId);
     }
 }

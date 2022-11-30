@@ -1,32 +1,33 @@
 using System;
 using UnityEngine;
 using TMPro;
+using Hotel.Models;
 using Hotel.Repositories;
 
 namespace Hotel.UI
 {
-    public class RoomCard : MonoBehaviour
+    public class RoomCard : UIToggler
     {
         [SerializeField] private ImageFitter _imageFitter;
         [SerializeField] private TMP_Text _roomName;
         [SerializeField] private TMP_Text _bedsNumber;
         [SerializeField] private TMP_Text _price;
-        private Action<int> _OnSelect;
-        private int _roomId;
+        private Room _room;
+        private Action<Room> _SelectRoomAction;
 
-        public void SetValues(int roomId, string name, string bedsNumber, string price, ImageRepository imageRepository, string imagePath, Action<int> action)
+        public void SetValues(Room room, string name, string bedsNumber, string price, ImageRepository imageRepository, string imagePath, Action<Room> selectRoomAction)
         {
-            _roomId = roomId;
+            _room = room;
             _roomName.text = name;
             _bedsNumber.text = bedsNumber;
             _price.text = price;
             _imageFitter.SetImage(imageRepository, imagePath);
-            _OnSelect = action;
+            _SelectRoomAction = selectRoomAction;
         }
 
         public void Select()
         {
-            _OnSelect(_roomId);
+            _SelectRoomAction(_room);
         }
     }
 }

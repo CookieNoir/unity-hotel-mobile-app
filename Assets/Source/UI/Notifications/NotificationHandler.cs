@@ -17,6 +17,12 @@ namespace Hotel.UI
             StartCoroutine(_coroutine);
         }
 
+        public void HideImmediately()
+        {
+            if (_coroutine != null) StopCoroutine(_coroutine);
+            _notificationDisplay.Hide();
+        }
+
         private IEnumerator _NotifyCoroutine(string message)
         {
             _notificationDisplay.Show(message, _animationCurve.Evaluate(0f));

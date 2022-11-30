@@ -33,7 +33,7 @@ namespace Hotel.ViewModels
         private static readonly Dictionary<string, string> _messages = new Dictionary<string, string>()
         {
             ["EDIT_SUCCESS"] = "Данные о комнате успешно изменены",
-            ["REMOVE_SUCCESS"] = "Данные о комнате успешно изменены",
+            ["REMOVE_SUCCESS"] = "Комната успешно удалена",
             ["NO_CONNECTION"] = "Соединение с сервером не установлено. Попробуйте еще раз",
             ["NOT_VALID_BEDS_NUMBER"] = "Поле \"макс. гостей\" заполнено некорректно. Убедитесь, что ввели в этом поле натуральное число",
             ["NOT_VALID_PRICE"] = "Поле \"цена за сутки\" заполнено некорректно. Убедитесь, что ввели в этом поле натуральное число",

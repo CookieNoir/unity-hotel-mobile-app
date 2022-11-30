@@ -21,6 +21,7 @@ namespace Hotel.Views
             if (_views.Count > 0)
             {
                 View openedView = _views.Peek();
+                if (openedView == view) return;
                 openedView.Hide();
             }
             _views.Push(view);

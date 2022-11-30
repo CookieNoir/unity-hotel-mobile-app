@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,10 +15,6 @@ namespace Hotel.ViewModels
         [SerializeField] private RoomCardHandler _roomCardHandler;
         [SerializeField] private NotificationHandler _notificationHandler;
         [SerializeField] private UnityEvent _OnRoomSelection;
-        [Space(10)]
-        [SerializeField] private GameObject _addRoomButton;
-        [SerializeField] private GameObject _bookingStatusButton;
-        private Dictionary<int, Room> _rooms = new Dictionary<int, Room>();
 
         private static readonly List<string> _textFormats = new List<string>()
         {
@@ -41,32 +36,17 @@ namespace Hotel.ViewModels
                 _notificationHandler.Notify(_exceptions["NO_CONNECTION"]);
                 return;
             }
-            List<Room> rooms = result.Item2;
-            rooms.Sort();
-            foreach (Room room in rooms)
-            {
-                _rooms.Add(room.RoomId, room);
-            }
-            _roomCardHandler.CreateCards(rooms, _textFormats[0], _textFormats[1], _textFormats[2], SelectRoom);
-            _SetSpecialButtonsActive(_sharedData.User.Role.CanManageRooms);
-        }
-
-        private void _SetSpecialButtonsActive(bool value)
-        {
-            _addRoomButton.SetActive(value);
-            _bookingStatusButton.SetActive(value);
+            _roomCardHandler.CreateCards(result.Item2, _textFormats[0], _textFormats[1], _textFormats[2], SelectRoom);
         }
 
         public void OnHide()
         {
             _roomCardHandler.Clear();
-            _rooms.Clear();
-            _SetSpecialButtonsActive(false);
         }
 
-        public void SelectRoom(int roomId)
+        public void SelectRoom(Room room)
         {
-            _sharedData.Room = _rooms[roomId];
+            _sharedData.Room = room;
             _OnRoomSelection.Invoke();
         }
     }

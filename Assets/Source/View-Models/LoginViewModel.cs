@@ -17,7 +17,9 @@ namespace Hotel.ViewModels
         [SerializeField] private TMP_InputField _passwordInputField;
         [SerializeField] private TMP_Text _errorTextField;
         [Space(10)]
+        [SerializeField] private GameObject _header;
         [SerializeField] private UnityEvent _OnSuccess;
+        [SerializeField] private UnityEvent<Role> _OnRoleSet;
 
         private static readonly Dictionary<string, string> _exceptions = new Dictionary<string, string>()
         {
@@ -31,6 +33,7 @@ namespace Hotel.ViewModels
             _emailInputField.text = "";
             _passwordInputField.text = "";
             _errorTextField.text = "";
+            _header.SetActive(false);
         }
 
         public void OnHide()
@@ -53,6 +56,8 @@ namespace Hotel.ViewModels
                     {
                         _sharedData.User = result.Item2;
                         _OnSuccess.Invoke();
+                        _OnRoleSet.Invoke(_sharedData.User.Role);
+                        _header.SetActive(true);
                         break;
                     }
                 case ServerResponse.ConnectionError:
