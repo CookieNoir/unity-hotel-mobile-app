@@ -14,7 +14,7 @@ namespace Hotel.Networking
         private static Dictionary<string, string> _sqlCommands = new Dictionary<string, string>()
         {
             ["Test"] = "select version()",
-            ["Register"] = "insert into \"User\" values (nextval('\"public\".\"User_user_id_seq\"'), 0, '{0}', '{1}', '{2}', '{3}', '{4}')",
+            ["Register"] = "insert into \"User\" values (nextval('\"public\".\"User_user_id_seq\"'), 0, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')",
             ["Contains_User"] = "select * from \"User\" where \"email\" = '{0}'",
             ["Get_Role"] = "select \"can_manage_rooms\", \"can_manage_users\" from \"Role\" where \"role_id\" = {0}",
             ["Get_Rooms"] = "select \"room_id\", \"beds_number\", \"price\",\"image_path\" from \"Room\" where \"decommissioned\"=false",
@@ -24,7 +24,7 @@ namespace Hotel.Networking
             ["Book_Room"] = "insert into \"Booking\" values (nextval('\"public\".\"Booking_booking_id_seq\"'), {0}, {1}, '{2}', '{3}');" +
                             "select currval('\"public\".\"Booking_booking_id_seq\"');",
             ["Add_Booking_Status"] = "insert into \"Booking_status\" values ({0}, 0)",
-            ["Get_Bookings"] = "select \"Booking\".\"booking_id\", \"Booking\".\"room_id\", \"User\".\"email\", \"User\".\"phone_number\", \"Booking\".\"date_from\", \"Booking\".\"date_to\", \"Booking_status\".\"stage_id\" " +
+            ["Get_Bookings"] = "select \"Booking\".\"booking_id\", \"Booking\".\"room_id\", \"User\".\"email\", \"User\".\"phone_number\", \"Booking\".\"date_from\", \"Booking\".\"date_to\", \"Booking_status\".\"stage_id\", \"User\".\"key\", \"User\".\"IV\" " +
                             "from \"Booking_status\" join \"Booking\" on \"Booking\".\"booking_id\" = \"Booking_status\".\"booking_id\" " +
                             "join \"User\" on \"Booking\".\"user_id\" = \"User\".\"user_id\"",
             ["Change_Booking_Status"] = "update \"Booking_status\" set \"stage_id\" = {1} WHERE \"booking_id\" = {0}",
@@ -39,6 +39,8 @@ namespace Hotel.Networking
                                     "join \"Room\" on \"Room\".\"room_id\"=\"Booking\".\"room_id\" " +
                                     "where \"Booking\".\"user_id\"={0}",
             ["Get_Decommissioned_Rooms"] = "select \"room_id\" from \"Room\" where \"decommissioned\"=true",
+            ["Get_Password"] = "select \"hash\", \"salt\" from \"User\" where \"user_id\"={0}",
+            ["Edit_User"] = "update \"User\" set \"user_name\"='{1}', \"phone_number\"='{2}', \"key\"='{3}', \"IV\"='{4}' where \"user_id\"={0}",
         };
 
         private async Task<NpgsqlConnection> _GetConnection()
@@ -78,13 +80,16 @@ namespace Hotel.Networking
                 transaction = await connection.BeginTransactionAsync();
                 string salt = SecurityHelper.GenerateSalt();
                 string hash = SecurityHelper.HashPassword(password, salt);
-                string command = string.Format(_sqlCommands["Register"], userName, email, phoneNumber, hash, salt);
+                string key, IV;
+                string encryptedPhoneNumber = SecurityHelper.EncryptDataWithAes(phoneNumber, out key, out IV);
+                string command = string.Format(_sqlCommands["Register"], userName, email, encryptedPhoneNumber, hash, salt, key, IV);
                 await new NpgsqlCommand(command, connection).ExecuteNonQueryAsync();
                 await transaction.CommitAsync();
                 return ServerResponse.Success;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log(e.StackTrace);
                 if (transaction != null) await transaction.RollbackAsync();
                 return ServerResponse.ConnectionError;
             }
@@ -104,6 +109,8 @@ namespace Hotel.Networking
             string userPhoneNumber = null;
             string userHash = null;
             string userSalt = null;
+            string key = null;
+            string IV = null;
             try
             {
                 if (await reader.ReadAsync())
@@ -115,10 +122,13 @@ namespace Hotel.Networking
                     userPhoneNumber = reader[4].ToString();
                     userHash = reader[5].ToString();
                     userSalt = reader[6].ToString();
+                    key = reader[7].ToString();
+                    IV = reader[8].ToString();
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log(e.StackTrace);
                 return (ServerResponse.ConnectionError, null);
             }
             finally
@@ -129,6 +139,7 @@ namespace Hotel.Networking
             string hash = SecurityHelper.HashPassword(password, userSalt);
             if (hash == userHash)
             {
+
                 string roleCommand = string.Format(_sqlCommands["Get_Role"], roleId);
                 NpgsqlDataReader roleReader = await new NpgsqlCommand(roleCommand, connection).ExecuteReaderAsync();
                 try
@@ -150,13 +161,15 @@ namespace Hotel.Networking
                         {
                             role = Role.Customer;
                         }
-                        User user = new User(userId, role, userName, userEmail, userPhoneNumber, userHash, userSalt);
+                        string decryptedPhoneNumber = SecurityHelper.DecryptDataWithAes(userPhoneNumber, key, IV);
+                        User user = new User(userId, role, userName, userEmail, decryptedPhoneNumber);
                         return (ServerResponse.Success, user);
                     }
                     return (ServerResponse.ConnectionError, null);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Debug.Log(e.StackTrace);
                     return (ServerResponse.ConnectionError, null);
                 }
                 finally
@@ -324,16 +337,18 @@ namespace Hotel.Networking
                 List<BookingData> bookings = new List<BookingData>();
                 while (await reader.ReadAsync())
                 {
+                    string decryptedPhoneNumber = SecurityHelper.DecryptDataWithAes(reader[3].ToString(), reader[7].ToString(), reader[8].ToString());
                     BookingData booking = new BookingData((int)reader[0], (int)reader[1],
-                        reader[2].ToString(), reader[3].ToString(),
+                        reader[2].ToString(), decryptedPhoneNumber,
                         (DateTime)reader[4], (DateTime)reader[5],
                         (BookingStage)((int)reader[6]));
                     bookings.Add(booking);
                 }
                 return (ServerResponse.Success, bookings);
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log(e.StackTrace);
                 return (ServerResponse.ConnectionError, null);
             }
             finally
@@ -531,6 +546,53 @@ namespace Hotel.Networking
             finally
             {
                 await reader.CloseAsync();
+            }
+        }
+
+        public async Task<ServerResponse> EditUser(int userId, string userName, string phoneNumber, string password)
+        {
+            using NpgsqlConnection connection = await _GetConnection();
+            if (!_IsOpen(connection)) return ServerResponse.ConnectionError;
+
+            NpgsqlTransaction transaction = null;
+            try
+            {
+                transaction = await connection.BeginTransactionAsync();
+                string getPasswordCommand = string.Format(_sqlCommands["Get_Password"], userId);
+                NpgsqlDataReader passwordReader = await new NpgsqlCommand(getPasswordCommand, connection).ExecuteReaderAsync();
+                string userHash = null;
+                string userSalt = null;
+                try
+                {
+                    if (await passwordReader.ReadAsync())
+                    {
+                        userHash = passwordReader[0].ToString();
+                        userSalt = passwordReader[1].ToString();
+                    }
+                }
+                finally
+                {
+                    await passwordReader.CloseAsync();
+                }
+
+                string hash = SecurityHelper.HashPassword(password, userSalt);
+                if (hash != userHash)
+                {
+                    throw new KeyNotFoundException();
+                }
+
+                string key, IV;
+                string encryptedPhoneNumber = SecurityHelper.EncryptDataWithAes(phoneNumber, out key, out IV);
+                string editUserCommand = string.Format(_sqlCommands["Edit_User"], userId, userName, encryptedPhoneNumber, key, IV);
+                await new NpgsqlCommand(editUserCommand, connection).ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
+                return ServerResponse.Success;
+            }
+            catch (Exception e)
+            {
+                if (transaction != null) await transaction.RollbackAsync();
+                if (e.GetType() == typeof(KeyNotFoundException)) return ServerResponse.DataError;
+                return ServerResponse.ConnectionError;
             }
         }
     }
