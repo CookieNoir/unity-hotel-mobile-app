@@ -41,6 +41,7 @@ namespace Hotel.Networking
             ["Get_Decommissioned_Rooms"] = "select \"room_id\" from \"Room\" where \"decommissioned\"=true",
             ["Get_Password"] = "select \"hash\", \"salt\" from \"User\" where \"user_id\"={0}",
             ["Edit_User"] = "update \"User\" set \"user_name\"='{1}', \"phone_number\"='{2}', \"key\"='{3}', \"IV\"='{4}' where \"user_id\"={0}",
+            ["Edit_User_Password"] = "update \"User\" set \"hash\"='{1}', \"salt\"='{2}' where \"user_id\"={0}",
         };
 
         private async Task<NpgsqlConnection> _GetConnection()
@@ -584,6 +585,53 @@ namespace Hotel.Networking
                 string key, IV;
                 string encryptedPhoneNumber = SecurityHelper.EncryptDataWithAes(phoneNumber, out key, out IV);
                 string editUserCommand = string.Format(_sqlCommands["Edit_User"], userId, userName, encryptedPhoneNumber, key, IV);
+                await new NpgsqlCommand(editUserCommand, connection).ExecuteNonQueryAsync();
+                await transaction.CommitAsync();
+                return ServerResponse.Success;
+            }
+            catch (Exception e)
+            {
+                if (transaction != null) await transaction.RollbackAsync();
+                if (e.GetType() == typeof(KeyNotFoundException)) return ServerResponse.DataError;
+                return ServerResponse.ConnectionError;
+            }
+        }
+
+        public async Task<ServerResponse> EditPassword(int userId, string password, string newPassword)
+        {
+            using NpgsqlConnection connection = await _GetConnection();
+            if (!_IsOpen(connection)) return ServerResponse.ConnectionError;
+
+            NpgsqlTransaction transaction = null;
+            try
+            {
+                transaction = await connection.BeginTransactionAsync();
+                string getPasswordCommand = string.Format(_sqlCommands["Get_Password"], userId);
+                NpgsqlDataReader passwordReader = await new NpgsqlCommand(getPasswordCommand, connection).ExecuteReaderAsync();
+                string userHash = null;
+                string userSalt = null;
+                try
+                {
+                    if (await passwordReader.ReadAsync())
+                    {
+                        userHash = passwordReader[0].ToString();
+                        userSalt = passwordReader[1].ToString();
+                    }
+                }
+                finally
+                {
+                    await passwordReader.CloseAsync();
+                }
+
+                string hash = SecurityHelper.HashPassword(password, userSalt);
+                if (hash != userHash)
+                {
+                    throw new KeyNotFoundException();
+                }
+
+                string newSalt = SecurityHelper.GenerateSalt();
+                string newHash = SecurityHelper.HashPassword(newPassword, newSalt);
+                string editUserCommand = string.Format(_sqlCommands["Edit_User_Password"], userId, newHash, newSalt);
                 await new NpgsqlCommand(editUserCommand, connection).ExecuteNonQueryAsync();
                 await transaction.CommitAsync();
                 return ServerResponse.Success;

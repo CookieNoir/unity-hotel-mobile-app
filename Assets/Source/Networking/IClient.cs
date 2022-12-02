@@ -23,5 +23,6 @@ namespace Hotel.Networking
         Task<ServerResponse> RestoreRoom(int roomId);
         Task<(ServerResponse, List<UserBookingData>)> GetUserBookings(int userId);
         Task<ServerResponse> EditUser(int userId, string userName, string phoneNumber, string password);
+        Task<ServerResponse> EditPassword(int userId, string password, string newPassword);
     }
 }
