@@ -24,10 +24,13 @@ For password hashing I used the PBKDF2 algorithm.
 For encrypting user phone numbers I used the AES block cipher algorithm.
 
 Some screenshots:
+
+<img src="Screenshots/logging_in.png" align="center" height="200px"/>
 Logging in
-![Logging in](Screenshots/logging_in.png){float: none; height: 200px;}
+<br clear="left"/>
+<img src="Screenshots/Screenshots/registration.png" align="center" height="200px"/>
 Registration
-![Registration](Screenshots/registration.png){float: none; height: 200px;}
+<br clear="left"/>
 Rooms list
 ![Rooms list](Screenshots/rooms_list.png){float: none; height: 200px;}
 Menu
