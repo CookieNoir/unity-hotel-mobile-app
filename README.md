@@ -25,22 +25,22 @@ For encrypting user phone numbers I used the AES block cipher algorithm.
 
 Some screenshots:
 Logging in
-![Logging in](Screenshots/logging in.png)
+![Logging in](Screenshots/logging_in.png)
 Registration
 ![Registration](Screenshots/registration.png)
 Rooms list
-![Rooms list](Screenshots/rooms list.png)
+![Rooms list](Screenshots/rooms_list.png)
 Menu
 ![Menu](Screenshots/menu.png)
 Room info
-![Room info](Screenshots/room info.png)
+![Room info](Screenshots/room_info.png)
 Room booking
 ![Room booking](Screenshots/booking.png)
 Customer's orders
-![Customer's orders](Screenshots/customer orders.png)
+![Customer's orders](Screenshots/customer_orders.png)
 Editing of user's personal data
-![User data editing](Screenshots/edit data.png)
+![User data editing](Screenshots/edit_data.png)
 List of all orders
-![All orders](Screenshots/all orders.png)
+![All orders](Screenshots/all_orders.png)
 Changing of user's role
-![Role changing](Screenshots/role change.png)
+![Role changing](Screenshots/role_change.png)
