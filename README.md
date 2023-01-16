@@ -25,22 +25,22 @@ For encrypting user phone numbers I used the AES block cipher algorithm.
 
 Some screenshots:
 Logging in
-![Logging in](Screenshots/logging_in.png)
+![Logging in](Screenshots/logging_in.png){float: none; height: 200px;}
 Registration
-![Registration](Screenshots/registration.png)
+![Registration](Screenshots/registration.png){float: none; height: 200px;}
 Rooms list
-![Rooms list](Screenshots/rooms_list.png)
+![Rooms list](Screenshots/rooms_list.png){float: none; height: 200px;}
 Menu
-![Menu](Screenshots/menu.png)
+![Menu](Screenshots/menu.png){float: none; height: 200px;}
 Room info
-![Room info](Screenshots/room_info.png)
+![Room info](Screenshots/room_info.png){float: none; height: 200px;}
 Room booking
-![Room booking](Screenshots/booking.png)
+![Room booking](Screenshots/booking.png){float: none; height: 200px;}
 Customer's orders
-![Customer's orders](Screenshots/customer_orders.png)
+![Customer's orders](Screenshots/customer_orders.png){float: none; height: 200px;}
 Editing of user's personal data
-![User data editing](Screenshots/edit_data.png)
+![User data editing](Screenshots/edit_data.png){float: none; height: 200px;}
 List of all orders
-![All orders](Screenshots/all_orders.png)
+![All orders](Screenshots/all_orders.png){float: none; height: 200px;}
 Changing of user's role
-![Role changing](Screenshots/role_change.png)
+![Role changing](Screenshots/role_change.png){float: none; height: 200px;}
