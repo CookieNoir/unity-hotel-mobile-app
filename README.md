@@ -28,30 +28,30 @@ Some screenshots:
 <img src="Screenshots/logging_in.png" align="center" width="450px"/>
 Logging in
 <br/><br/>
-<img src="Screenshots/registration.png"/>
+<img src="Screenshots/registration.png" align="center" width="450px"/>
 Registration
 <br/><br/>
-<img src="Screenshots/rooms_list.png"/>
+<img src="Screenshots/rooms_list.png" align="center" width="450px"/>
 Rooms list
 <br/><br/>
-<img src="Screenshots/menu.png"/>
+<img src="Screenshots/menu.png" align="center" width="450px"/>
 Menu
 <br/><br/>
-<img src="Screenshots/room_info.png"/>
+<img src="Screenshots/room_info.png" align="center" width="450px"/>
 Room info
 <br/><br/>
-<img src="Screenshots/booking.png"/>
+<img src="Screenshots/booking.png" align="center" width="450px"/>
 Room booking
 <br/><br/>
-<img src="Screenshots/customer_orders.png"/>
+<img src="Screenshots/customer_orders.png" align="center" width="450px"/>
 Customer's orders
 <br/><br/>
-<img src="Screenshots/edit_data.png"/>
+<img src="Screenshots/edit_data.png" align="center" width="450px"/>
 Editing of user's personal data
 <br/><br/>
-<img src="Screenshots/all_orders.png"/>
+<img src="Screenshots/all_orders.png" align="center" width="450px"/>
 List of all orders
 <br/><br/>
-<img src="Screenshots/role_change.png"/>
+<img src="Screenshots/role_change.png" align="center" width="450px"/>
 Changing of user's role
 <br/><br/>
