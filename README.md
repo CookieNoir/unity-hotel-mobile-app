@@ -27,50 +27,31 @@ Some screenshots:
 
 <img src="Screenshots/logging_in.png" align="center" width="450px"/>
 Logging in
-
-<br clear="left"/>
-
-<img src="Screenshots/registration.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/registration.png"/>
 Registration
-
-<br clear="left"/>
-
-<img src="Screenshots/rooms_list.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/rooms_list.png"/>
 Rooms list
-
-<br clear="left"/>
-
-<img src="Screenshots/menu.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/menu.png"/>
 Menu
-
-<br clear="left"/>
-
-<img src="Screenshots/room_info.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/room_info.png"/>
 Room info
-
-<br clear="left"/>
-
-<img src="Screenshots/booking.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/booking.png"/>
 Room booking
-
-<br clear="left"/>
-
-<img src="Screenshots/customer_orders.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/customer_orders.png"/>
 Customer's orders
-
-<br clear="left"/>
-
-<img src="Screenshots/edit_data.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/edit_data.png"/>
 Editing of user's personal data
-
-<br clear="left"/>
-
-<img src="Screenshots/all_orders.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/all_orders.png"/>
 List of all orders
-
-<br clear="left"/>
-
-<img src="Screenshots/role_change.png" align="center" width="450px"/>
+<br/><br/>
+<img src="Screenshots/role_change.png"/>
 Changing of user's role
-
-<br clear="left"/>
+<br/><br/>
