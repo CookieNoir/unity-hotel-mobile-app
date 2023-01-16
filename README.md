@@ -25,25 +25,42 @@ For encrypting user phone numbers I used the AES block cipher algorithm.
 
 Some screenshots:
 
-<img src="Screenshots/logging_in.png" align="center" height="200px"/>
+<img src="Screenshots/logging_in.png" align="center" height="450px"/>
 Logging in
 <br clear="left"/>
-<img src="Screenshots/Screenshots/registration.png" align="center" height="200px"/>
+
+<img src="Screenshots/registration.png" align="center" height="450px"/>
 Registration
 <br clear="left"/>
+
+<img src="Screenshots/rooms_list.png" align="center" height="450px"/>
 Rooms list
-![Rooms list](Screenshots/rooms_list.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/menu.png" align="center" height="450px"/>
 Menu
-![Menu](Screenshots/menu.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/room_info.png" align="center" height="450px"/>
 Room info
-![Room info](Screenshots/room_info.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/booking.png" align="center" height="450px"/>
 Room booking
-![Room booking](Screenshots/booking.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/customer_orders.png" align="center" height="450px"/>
 Customer's orders
-![Customer's orders](Screenshots/customer_orders.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/edit_data.png" align="center" height="450px"/>
 Editing of user's personal data
-![User data editing](Screenshots/edit_data.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/all_orders.png" align="center" height="450px"/>
 List of all orders
-![All orders](Screenshots/all_orders.png){float: none; height: 200px;}
+<br clear="left"/>
+
+<img src="Screenshots/role_change.png" align="center" height="450px"/>
 Changing of user's role
-![Role changing](Screenshots/role_change.png){float: none; height: 200px;}
+<br clear="left"/>
